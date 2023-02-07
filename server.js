@@ -1,9 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
+var cors = require('cors')
 const app = express();
 
-
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 
 app.use(express.json());
@@ -12,7 +16,7 @@ app.get("/api", (req, res) => {
     res.json({"message": "Hello from server!"});
 });
 
-app.post("/api", async (req, res) => {
+app.post("/api", cors(corsOptions), async (req, res) => {
 
 
     const data = req.body;
