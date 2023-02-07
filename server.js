@@ -77,6 +77,9 @@ app.post("/api", cors(corsOptions), async (req, res) => {
             reject(error);
           }
           console.log(response.body);
+          if(response.body.status === "failed"){
+            fetch();
+          }
           if (response.body.status === "processing") {
             setTimeout(() => {
               fetch();
