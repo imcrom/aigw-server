@@ -5,7 +5,7 @@ var cors = require('cors')
 const app = express();
 
 var corsOptions = {
-  origin: 'https://confused-pear-pangolin.cyclic.app',
+  origin: 'https://imcrom.github.io',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
