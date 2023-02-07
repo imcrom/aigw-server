@@ -5,14 +5,14 @@ var cors = require('cors')
 const app = express();
 
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://imcrom.github.io/',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 
 app.use(express.json());
 
-app.get("/api", (req, res) => {
+app.get("/api",cors(corsOptions), (req, res) => {
     res.json({"message": "Hello from server!"});
 });
 
