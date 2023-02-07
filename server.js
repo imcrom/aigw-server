@@ -67,29 +67,31 @@ app.post("/api", cors(corsOptions), async (req, res) => {
         }
     
   });
-
-async function fetchData(options, url) {
-  return new Promise((resolve, reject) => {
-    const fetch = () => {
-      request(options, (error, response, body) => {
-        if (error) {
-          reject(error);
-        }
-        console.log(response.body);
-        if (response.body.status === "processing") {
-          setTimeout(() => {
-            fetch();
-          }, response.body.eta * 1000);
-        } else if (response.body.status === "success") {
-          resolve(body);
-        } else {
-          clearTimeout();
-          resolve(new Error("Unsupported status: " + response.body.status));
-        }
-      });
-    };
-    fetch();
-  });
-}
+  
+  async function fetchData(options, url) {
+    return new Promise((resolve, reject) => {
+      const fetch = () => {
+        const newOptions = Object.assign({}, options, { timeout: 0 });
+        request(newOptions, (error, response, body) => {
+          if (error) {
+            reject(error);
+          }
+          console.log(response.body);
+          if (response.body.status === "processing") {
+            setTimeout(() => {
+              fetch();
+            }, response.body.eta * 1000);
+          } else if (response.body.status === "success") {
+            resolve(body);
+          } else {
+            clearTimeout();
+            resolve(new Error("Unsupported status: " + response.body.status));
+          }
+        });
+      };
+      fetch();
+    });
+  }
+  
 
 app.listen(5000, () => {console.log("server started on port 80")});
