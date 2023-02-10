@@ -5,15 +5,15 @@ var cors = require('cors')
 const app = express();
 
 var corsOptions = {
-  origin: 'https://aigonewild.org',
+  origin: 'https://generate.aigonewild.org',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 
 app.use(express.json());
-app.use(cors({ origin: 'https://aigonewild.org' }));
+app.use(cors({ origin: 'https://generate.aigonewild.org' }));
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'https://aigonewild.org');
+  res.header('Access-Control-Allow-Origin', 'https://generate.aigonewild.org');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
@@ -43,7 +43,7 @@ app.post("/api", cors(corsOptions), async (req, res) => {
             key: 'YimEHAg0HxDBkYtZp7X8ZEv7u84XWtt66TgVA78BnGWQlLHe6cdoDQREjpV5',
             model_id: 'realistic-vision-v13',
             prompt: data.posPrompt,
-            negative_prompt: data.negPrompt + 'painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime',
+            negative_prompt: 'painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime',
             width: '512',
             height: '512',
             samples: '1',
