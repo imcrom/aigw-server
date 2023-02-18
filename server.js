@@ -95,6 +95,65 @@ app.post("/api", cors(corsOptions), async (req, res) => {
       fetch();
     });
   }
+
+  app.post("/upscale", cors(corsOptions), async (req, res) => {
+
+
+    const data = req.body;
+  
+    const options = {
+        method: 'POST',
+        url: 'https://stablediffusionapi.com/api/v3/super_resolution',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: {
+            key: 'YimEHAg0HxDBkYtZp7X8ZEv7u84XWtt66TgVA78BnGWQlLHe6cdoDQREjpV5',
+            url: data.url,
+            scale: 3,
+            webhook: 'null',
+            face_enhance: 'false'
+            },
+          json: true,
+        };
+
+        try {
+            const data = await fetchData(options, options.url);
+            return res.status(200).json(data);
+        } catch (e) {
+            return res.status(500).json({ error: e });
+        }
+    
+  });
+  
+  async function fetchData(options, url) {
+    return new Promise((resolve, reject) => {
+      const fetch = () => {
+        const newOptions = Object.assign({}, options, { timeout: 0 });
+        request(newOptions, (error, response, body) => {
+          if (error) {
+            reject(error);
+          }
+          console.log(response.body);
+          if(response.body.status === "failed"){
+            fetch();
+          }
+          if (response.body.status === "processing") {
+            setTimeout(() => {
+              fetch();
+            }, response.body.eta * 1000);
+          } else if (response.body.status === "success") {
+            resolve(body);
+          } else {
+            clearTimeout();
+            resolve(new Error("Unsupported status: " + response.body.status));
+          }
+        });
+      };
+      fetch();
+    });
+  }
   
 
 app.listen(5000, () => {console.log("server started on port 80")});
